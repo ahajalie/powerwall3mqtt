@@ -106,7 +106,7 @@ class Powerwall3MQTT:
         for k, item in config.items():
             value = os.environ.get(f"POWERWALL3MQTT_CONFIG_{k.upper()}", item)
             if isinstance(item, bool):
-                config[k] = bool(value)
+                config[k] = value.lower() not in ('false', 'off', '0', '')
             elif isinstance(item,  int):
                 config[k] = int(value)
             else:
@@ -229,6 +229,7 @@ class Powerwall3MQTT:
         sel.register(shutdown, EVENT_READ)
         sel.register(ha_status, EVENT_READ)
         sel.register(self._update_loop[0], EVENT_READ)
+        timeout_skipping = False
 
         while True:
             for key, _ in sel.select():
@@ -251,6 +252,7 @@ class Powerwall3MQTT:
                         self._update_loop[0].recv(1)
                         logger.debug("Processing update from timing_loop")
                         self.update(mqtt, tesla, True)
+                        timeout_skipping = False
                 except pytedapi.exceptions.TEDAPIRateLimitingException as e:
                     self._config['tedapi_poll_interval'] += 1
                     logger.warning(e)
@@ -261,6 +263,12 @@ class Powerwall3MQTT:
                     # Likely fatal, bail out
                     self.set_running(False)
                     raise e
+                except requests.exceptions.ConnectTimeout as e:
+                    # Likely Powerwall offline, skip interval
+                    if not timeout_skipping:
+                        logger.warning("HTTP connect timeout, skipping interval.")
+                        logger.debug(e, exc_info=True)
+                        timeout_skipping = True
                 except TimeoutError as e:
                     # Likely lock timeout, skip interval
                     logger.warning(e, exc_info=True)
