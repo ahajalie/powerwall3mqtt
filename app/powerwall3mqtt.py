@@ -106,7 +106,10 @@ class Powerwall3MQTT:
         for k, item in config.items():
             value = os.environ.get(f"POWERWALL3MQTT_CONFIG_{k.upper()}", item)
             if isinstance(item, bool):
-                config[k] = value.lower() not in ('false', 'off', '0', '')
+                if isinstance(value, str):
+                    config[k] = value.lower() not in ('false', 'off', '0', '')
+                else
+                    config[k] = bool(value)
             elif isinstance(item,  int):
                 config[k] = int(value)
             else:
