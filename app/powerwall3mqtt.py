@@ -69,9 +69,9 @@ class Powerwall3MQTT:
         logger.debug("Runtime config:")
         for key in sorted(self._config.keys()):
             if key.find('password') == -1:
-                logger.debug("config['%s'] = '%s'", key, self._config[key])
+                logger.debug("config['%s'] = '%s'", key, self._config[key] if self._config[key] is not None else '')
             else:
-                redacted = re.sub('.', 'X', self._config[key])
+                redacted = re.sub('.', 'X', self._config[key] if self._config[key] is not None else '')
                 logger.debug("config['%s'] = '%s'", key, redacted)
 
 
@@ -106,7 +106,7 @@ class Powerwall3MQTT:
         for k, item in config.items():
             value = os.environ.get(f"POWERWALL3MQTT_CONFIG_{k.upper()}", item)
             if isinstance(item, bool):
-                config[k] = bool(value)
+                config[k] = value.lower() not in ('false', 'off', '0', '')
             elif isinstance(item,  int):
                 config[k] = int(value)
             else:
@@ -122,8 +122,9 @@ class Powerwall3MQTT:
             raise FatalError("tedapi_password not set")
         if None in (config['mqtt_host'], config['mqtt_port']):
             raise FatalError("MQTT connection info not set")
-        if None in (config['mqtt_username'], config['mqtt_password']):
-            raise FatalError("MQTT authentication info not set")
+	if config['mqtt_username]) is not None:
+	        if config['mqtt_password'] is None:
+        	    raise FatalError("MQTT authentication info not set")
         if config['tedapi_poll_interval'] < 5:
             raise FatalError("Polling Interval must be >= 5")
         if (config['mqtt_cert'] is not None) ^ (config['mqtt_key'] is not None):
@@ -171,9 +172,10 @@ class Powerwall3MQTT:
                 certfile=self._config['mqtt_cert'],
                 keyfile=self._config['mqtt_key'])
             client.tls_insecure_set(self._config['mqtt_verify_tls'])
-        client.username_pw_set(
-            self._config['mqtt_username'],
-            self._config['mqtt_password'])
+	if self._config['mqtt_username']:
+            client.username_pw_set(
+                self._config['mqtt_username'],
+                self._config['mqtt_password'])
         client.connect(self._config['mqtt_host'], self._config['mqtt_port'])
         return client, ha_status[0]
 
@@ -229,6 +231,7 @@ class Powerwall3MQTT:
         sel.register(shutdown, EVENT_READ)
         sel.register(ha_status, EVENT_READ)
         sel.register(self._update_loop[0], EVENT_READ)
+        timeout_skipping = False
 
         while True:
             for key, _ in sel.select():
@@ -251,6 +254,7 @@ class Powerwall3MQTT:
                         self._update_loop[0].recv(1)
                         logger.debug("Processing update from timing_loop")
                         self.update(mqtt, tesla, True)
+                        timeout_skipping = False
                 except pytedapi.exceptions.TEDAPIRateLimitingException as e:
                     self._config['tedapi_poll_interval'] += 1
                     logger.warning(e)
@@ -261,6 +265,12 @@ class Powerwall3MQTT:
                     # Likely fatal, bail out
                     self.set_running(False)
                     raise e
+                except requests.exceptions.ConnectTimeout as e:
+                    # Likely Powerwall offline, skip interval
+                    if not timeout_skipping:
+                        logger.warning("HTTP connect timeout, skipping interval.")
+                        logger.debug(e, exc_info=True)
+                        timeout_skipping = True
                 except TimeoutError as e:
                     # Likely lock timeout, skip interval
                     logger.warning(e, exc_info=True)

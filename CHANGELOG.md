@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.2] - 2025-04-05
+
+### Fixed
+
+- [Issue #24](https://github.com/slyglif/powerwall3mqtt/issues/24): Properly handle ConnectTimeout so the log isn't spammed with exceptions.
+- [Issue #30](https://github.com/slyglif/powerwall3mqtt/issues/30): Allow anonymous MQTT connections.
+- [Issue #33](https://github.com/slyglif/powerwall3mqtt/issues/33): Properly handle ENV boolean options.
+- Thanks to @sbman for finding and suggesting fixes for both 30 and 33!
+
 ## [0.3.1] - 2025-03-09
 
 ### Fixed
@@ -93,7 +102,8 @@
 
 - [Issue #8](https://github.com/slyglif/powerwall3mqtt/issues/8): Shutdowns weren't clean, preventing relavent logs from showing
 
-[unreleased]: https://github.com/slyglif/powerwall3mqtt/compare/v0.3.1...HEAD
+[unreleased]: https://github.com/slyglif/powerwall3mqtt/compare/v0.3.2...HEAD
+[0.3.2]: https://github.com/slyglif/powerwall3mqtt/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/slyglif/powerwall3mqtt/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/slyglif/powerwall3mqtt/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/slyglif/powerwall3mqtt/compare/v0.1.3...v0.2.0
