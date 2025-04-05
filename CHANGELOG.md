@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.4] - 2025-04-05
+
+### Fixed
+
+- [Issue #37](https://github.com/slyglif/powerwall3mqtt/issues/37): Fix typo from a merge.
+
 ## [0.3.3] - 2025-04-05
 
 ### Fixed

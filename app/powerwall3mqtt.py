@@ -122,9 +122,9 @@ class Powerwall3MQTT:
             raise FatalError("tedapi_password not set")
         if None in (config['mqtt_host'], config['mqtt_port']):
             raise FatalError("MQTT connection info not set")
-	if config['mqtt_username'] is not None:
-	        if config['mqtt_password'] is None:
-        	    raise FatalError("MQTT authentication info not set")
+        if config['mqtt_username'] is not None:
+            if config['mqtt_password'] is None:
+                raise FatalError("MQTT authentication info not set")
         if config['tedapi_poll_interval'] < 5:
             raise FatalError("Polling Interval must be >= 5")
         if (config['mqtt_cert'] is not None) ^ (config['mqtt_key'] is not None):
