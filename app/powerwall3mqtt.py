@@ -108,7 +108,7 @@ class Powerwall3MQTT:
             if isinstance(item, bool):
                 if isinstance(value, str):
                     config[k] = value.lower() not in ('false', 'off', '0', '')
-                else
+                else:
                     config[k] = bool(value)
             elif isinstance(item,  int):
                 config[k] = int(value)
