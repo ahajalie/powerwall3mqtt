@@ -172,7 +172,7 @@ class Powerwall3MQTT:
                 certfile=self._config['mqtt_cert'],
                 keyfile=self._config['mqtt_key'])
             client.tls_insecure_set(self._config['mqtt_verify_tls'])
-	if self._config['mqtt_username']:
+	    if self._config['mqtt_username']:
             client.username_pw_set(
                 self._config['mqtt_username'],
                 self._config['mqtt_password'])
