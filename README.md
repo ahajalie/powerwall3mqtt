@@ -2,7 +2,8 @@
 A simple Home Assistant Add On that acts as a bridge between the Powerwall 3 TEDAPI and MQTT.
 
 ## Current state
-- Right now the bridge can deal with a single group of one or more Powerwall 3s.  It might also support expansion units, but I have none to test with.
+- Powerwall 3 local access requires a direct connection to the TeslaPW_XXXXX WiFi network.  The device running this add-on must have an IP from that network, which is 192.168.91.x/24.  A wired ethernet connection *will not work*.
+- The bridge can deal with a single group of one or more Powerwall 3s.  It might also support expansion units, but I have none to test with.
 - Power reporting is working for the following:
 	- Aggregates of the entire system
 	- Individual PV strings on each PW3
@@ -33,14 +34,17 @@ A simple Home Assistant Add On that acts as a bridge between the Powerwall 3 TED
 	- I'm planning to work on these later this year when I'm on-site where my PW3 install is
 
 ## Pre-reqs
-**Starting with firmware 25.10.1, the only known way to communicate with the TEDAPI is using the TeslaPW_XXXXX WiFi network.  If your HA server is within range of the PW you can join it directly, but otherwise you'd need to create some kind of bridge, which is beyond the scope of this project.**
+**Starting with firmware 25.10.1, the only known way to communicate with the TEDAPI is using the TeslaPW_XXXXX WiFi network.**
+If your HA server is within range of the PW you can join it directly, but otherwise you'd need to create some kind of bridge, which is beyond the scope of this project.
 
 ## Reporting problems
 - Please switch the Logging Level to DEBUG in Configuration and restart the add-on.
 	- You may need to toggle "Show unused optional configuration options" on.
 - Open an issue at https://github.com/slyglif/powerwall3mqtt/issues
 	- Describe the issue you are encountering
+	- Include the version of HA and HAOS
 	- Include the version of the add-on
+	- Include the IP address for HAOS.  Problem reports without this will be closed.
 	- Include the logs
 		- Include the full logs if possible
 		- If the full logs are megabytes in size, at least the first 20 lines at startup and the 10 lines prior to the error

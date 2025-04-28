@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.4.0] - 2025-04-27
+
+### Changes
+
+- Updated README to be more explicit about TeslaPW_XXXXX network requirement.
+
 ## [0.3.9] - 2025-04-09
 
 ### Changes
@@ -114,7 +120,8 @@
 
 - [Issue #8](https://github.com/slyglif/powerwall3mqtt/issues/8): Shutdowns weren't clean, preventing relavent logs from showing
 
-[unreleased]: https://github.com/slyglif/powerwall3mqtt/compare/v0.3.9...HEAD
+[unreleased]: https://github.com/slyglif/powerwall3mqtt/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/slyglif/powerwall3mqtt/compare/v0.3.9...v0.4.0
 [0.3.9]: https://github.com/slyglif/powerwall3mqtt/compare/v0.3.8...v0.3.9
 [0.3.8]: https://github.com/slyglif/powerwall3mqtt/compare/v0.3.2...v0.3.8
 [0.3.2]: https://github.com/slyglif/powerwall3mqtt/compare/v0.3.1...v0.3.2
