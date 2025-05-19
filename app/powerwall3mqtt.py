@@ -303,7 +303,7 @@ class Powerwall3MQTT:
                 host=self._config['tedapi_host'])
             powerwall = pytedapi.Powerwall3API(
                 tedapi,
-                cacheexpire=4,
+                cacheexpire=1,
                 configexpire=29)
         except requests.exceptions.ConnectionError as e:
             raise FatalError("Unable to connect to Powerwall") from e

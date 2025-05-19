@@ -113,7 +113,7 @@ class TeslaEnergyDeviceAPI:
     def __init__(self,
             gw_pwd: str,
             host: str = GW_IP,
-            timeout: int = 5,
+            timeout: int = 1,
             cooldown: int = 300) -> None:
         if not gw_pwd:
             raise ValueError("Missing gw_pwd")
@@ -302,8 +302,8 @@ class Powerwall3API:
     """
     def __init__(self,
             tesla: TeslaEnergyDeviceAPI,
-            cacheexpire: int = 5,
-            configexpire: int = 5,
+            cacheexpire: int = 1,
+            configexpire: int = 1,
             timeout: int = 5) -> None:
         self._tesla = tesla
         self._timeout = timeout
