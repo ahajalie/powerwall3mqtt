@@ -22,7 +22,7 @@ schema:
   log_level: "list(DEBUG|INFO|WARNING|ERROR|CRITICAL)?"
   tedapi_password: str
   tedapi_report_vitals: bool
-  tedapi_poll_interval: "int(5,300)"
+  tedapi_poll_interval: "int(1,300)"
   mqtt_base_topic: str
   mqtt_host: "str?"
   mqtt_port: "port?"
