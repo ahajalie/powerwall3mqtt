@@ -1,5 +1,5 @@
 # powerwall3mqtt
-A simple Home Assistant Add On that acts as a bridge between the Powerwall 3 TEDAPI and MQTT.
+A simple Home Assistant Add On that acts as a bridge between the Powerwall 3 TEDAPI and MQTT. This forked modification of the original source now allows a polling interval to be set to as low as 1 second, and reduces the cache to 1 second. This enables realtime monitoring updates within 1-2 seconds.
 
 ## Current state
 - Powerwall 3 local access requires a direct connection to the TeslaPW_XXXXX WiFi network.  The device running this add-on must have an IP from that network, which is 192.168.91.x/24.  A wired ethernet connection *will not work*.
